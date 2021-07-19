@@ -13,7 +13,6 @@ import { LightningElement,wire,api } from 'lwc';
 import getListOfPendingApprovalRecords from '@salesforce/apex/ItemForApprovalController.getListOfPendingApprovalRecords';
 import loggedInUserId from '@salesforce/user/Id';
 
-
 export default class ItemForApproval extends LightningElement {
     @api tableData;
     showModelPopup = false;
