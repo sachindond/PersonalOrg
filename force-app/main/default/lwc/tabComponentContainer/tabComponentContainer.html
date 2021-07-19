@@ -1,0 +1,53 @@
+<!--
+    # Author        : Sachin Dond
+    # CreatedDate   : 7 July 2021
+    # Purpose       : This component is used as container component/Parent component.
+    # Type          : Parent Component/Main Component
+    # Update History:
+-->
+<template>
+    <lightning-tabset active-tab-value ="">
+        <lightning-tab icon-name="" label="Permanent Address" value= "PermanentAddress" onactive={handleActiveTab} class='Tab1'>
+            <lightning-layout>
+                <!-- recod view form to show record -->
+                <lightning-layout-item size="6">
+                    <c-show-address-information record-id={permanentAddressId} object-api-name='Address_Information__c'></c-show-address-information>
+                </lightning-layout-item>
+                <!-- record edit form to insert/update record -->
+                <lightning-layout-item size="6">
+                   <c-edit-address-information onobjectvaluechange={handleObjectValueChange} updated-fields-value-obj={updatedFieldValue} record-id={permanentAddressId} object-api-name='Address_Information__c'></c-edit-address-information>
+                </lightning-layout-item>
+            </lightning-layout>
+        </lightning-tab>
+        <lightning-tab label="Current Address" value= "CurrentAddress" onactive={handleActiveTab}>
+            <lightning-layout>
+                <lightning-layout-item size="6">
+                    <c-show-address-information record-id={currentAddressId} object-api-name='Address_Information__c'></c-show-address-information>
+                </lightning-layout-item>
+                <lightning-layout-item size="6">
+                   <c-edit-address-information onobjectvaluechange={handleObjectValueChange} updated-fields-value-obj={updatedFieldValue} record-id={currentAddressId} object-api-name='Address_Information__c'></c-edit-address-information>
+                </lightning-layout-item>
+            </lightning-layout>
+        </lightning-tab>
+        <lightning-tab label="Shipping Address" value= "ShippingAddress" onactive={handleActiveTab}>
+            <lightning-layout>
+                <lightning-layout-item size="6">
+                    <c-show-address-information record-id={shippingAddressId} object-api-name='Address_Information__c'></c-show-address-information>
+                </lightning-layout-item>
+                <lightning-layout-item size="6">
+                   <c-edit-address-information onobjectvaluechange={handleObjectValueChange} updated-fields-value-obj ={updatedFieldValue} record-id={shippingAddressId} object-api-name='Address_Information__c'></c-edit-address-information>
+                </lightning-layout-item>
+            </lightning-layout>
+        </lightning-tab>
+        <lightning-tab label="Billing Address" value= "BillingAddress" onactive={handleActiveTab}>
+            <lightning-layout>
+                <lightning-layout-item size="6">
+                    <c-show-address-information record-id={billingAddressId} object-api-name='Address_Information__c'></c-show-address-information>
+                </lightning-layout-item>
+                <lightning-layout-item size="6">
+                   <c-edit-address-information onobjectvaluechange={handleObjectValueChange} updated-fields-value-obj ={updatedFieldValue} record-id={billingAddressId} object-api-name='Address_Information__c'></c-edit-address-information>
+                </lightning-layout-item>
+            </lightning-layout>
+        </lightning-tab>
+    </lightning-tabset>
+</template>

@@ -1,0 +1,51 @@
+<!--
+    # Author        : Sachin Dond
+    # CreatedDate   : 13 July 2021
+    # Purpose       : Data table component to show the list of Cases which is Pending for Approval 
+                      for 1. Logged in user as owner and 2. Logged in user as Queue Member
+    # Type          : Main/Parent Component
+    # Update History:
+-->
+<template>
+  <div class="slds-page-header slds-page-header_record-home">
+  <div class="slds-page-header__row">
+    <div class="slds-page-header__col-title">
+      <div class="slds-media">
+        <div class="slds-media__figure">
+            <lightning-icon icon-name="standard:approval" alternative-text="Approved" title="Approved"></lightning-icon>
+        </div>
+        <div class="slds-media__body">
+          <div class="slds-page-header__name">
+            <div class="slds-page-header__name-title">
+              <h1>
+                <span>Approval Requests</span>
+                <span class="slds-page-header__title slds-truncate" title="Items to Approve">Items to Approve</span>
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slds-page-header__col-actions">
+      <div class="slds-page-header__controls">
+        <div class="slds-page-header__control">
+           
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slds-page-header__row slds-page-header__row_gutters">
+    <div class="slds-page-header__col-details">
+    <lightning-datatable
+          key-field="id"
+          data={tableData}
+          columns={columnList}
+          onrowaction={handleRowAction}
+          show-row-number-column="true"
+          hide-checkbox-column
+          >
+    </lightning-datatable>
+    </div>
+  </div>
+</div>
+</template>

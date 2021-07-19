@@ -1,0 +1,26 @@
+<!--
+    # Author        : Sachin Dond
+    # CreatedDate   : 7 July 2021
+    # Purpose       : reusable component to show the record-view form for perticular record Id
+    # Type          : Child Component called inside Parent Component - tabComponentContainer
+    # Update History:
+-->
+
+
+<template>
+    <lightning-layout>
+        <lightning-layout-item size="12">
+          <template if:true={isShowRecordViewForm}>
+            <div>{message}</div>
+          </template>
+          <lightning-record-view-form record-id={recordId}
+          object-api-name={objectApiName}>
+              <lightning-output-field field-name="Address_Line_1__c"></lightning-output-field>
+              <lightning-output-field field-name="Address_Line_2__c"></lightning-output-field>
+              <lightning-output-field field-name="Phone__c"></lightning-output-field>
+              <lightning-output-field field-name="Postal_Code__c"></lightning-output-field>
+              <lightning-output-field field-name="Address_Type__c"></lightning-output-field>
+          </lightning-record-view-form>
+        </lightning-layout-item>
+    </lightning-layout>
+</template>

@@ -1,0 +1,30 @@
+<!--
+    # Author        : Sachin Dond
+    # CreatedDate   : 7 July 2021
+    # Purpose       : reusable component to show the record-edit form for perticular record Id
+    # Type          : Child Component called inside Parent Component - tabComponentContainer
+    # Update History:
+-->
+
+
+<template>
+    <lightning-layout>
+        <lightning-layout-item size="12">
+        <lightning-button variant="base" label="Copy Address Information" title="Copy Address Information" 
+            onclick={handleCopyAddressInformation} class="slds-m-left_x-small">
+        </lightning-button>
+            <lightning-record-edit-form record-id={recordId}
+                                  object-api-name={objectApiName} onload={onFormLoad}>
+                <lightning-input-field field-name="Address_Line_1__c" onchange={handleOnInputFieldChange} class='addressInputField'></lightning-input-field>
+                <lightning-input-field field-name="Address_Line_2__c" onchange={handleOnInputFieldChange}></lightning-input-field>
+                <lightning-input-field field-name="Phone__c" onchange={handleOnInputFieldChange}></lightning-input-field>
+                <lightning-input-field field-name="Postal_Code__c" onchange={handleOnInputFieldChange}></lightning-input-field>
+                <lightning-input-field field-name="Address_Type__c" onchange={handleOnInputFieldChange}></lightning-input-field>
+            </lightning-record-edit-form>
+            <div class="slds-align_right">
+                <lightning-button variant="brand" label="Reset" title="Reset" onclick={handleReset} class="slds-m-left_x-small">
+                </lightning-button>
+            </div>
+        </lightning-layout-item>
+    </lightning-layout>
+</template>

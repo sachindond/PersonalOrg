@@ -1,0 +1,4 @@
+<aura:component implements="flexipage:availableForAllPageTypes">
+    <p>LWC Composed in Aura Component</p>
+    <c:accordionContainerComponent />
+</aura:component>	
