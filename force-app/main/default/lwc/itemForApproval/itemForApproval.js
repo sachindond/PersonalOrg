@@ -12,14 +12,18 @@
 import { LightningElement,wire,api } from 'lwc';
 import getListOfPendingApprovalRecords from '@salesforce/apex/ItemForApprovalController.getListOfPendingApprovalRecords';
 import loggedInUserId from '@salesforce/user/Id';
+import { NavigationMixin } from 'lightning/navigation'; //import library for navigation
 
 export default class ItemForApproval extends LightningElement {
     @api tableData;
     showModelPopup = false;
     modalHeaderText;
+    sfdcBaseURL;
     //actions = [];
     //columnList = columns;
     connectedCallback() {
+        this.sfdcBaseURL = window.location.origin;
+        console.log('****sfdcBaseURL',this.sfdcBaseURL);
         const columns = [    
             { label: 'Related To', fieldName: 'RelatedTo', type: 'url' , typeAttributes:{label: { fieldName: 'CaseNumber' }}},
             { label: 'Type', fieldName: 'Type'},
@@ -41,7 +45,7 @@ export default class ItemForApproval extends LightningElement {
                 let tempArray = [];
                 data.forEach(record=>{
                    let tempObj = {};
-                   tempObj.RelatedTo = '/' + record.Id;
+                   tempObj.RelatedTo = this.getEncodedComponentDefUrl(record.ProcessInstance.TargetObjectId);
                    tempObj.CaseNumber = record.ProcessInstance.TargetObject.Name;
                    tempObj.Type =  record.ProcessInstance.TargetObject.Type;
                    tempObj.AssignTo = record.Actor.Name;
@@ -89,6 +93,20 @@ export default class ItemForApproval extends LightningElement {
             doneCallback(actions);
         }, 100);
     }
-    
-    
+    /*
+        # Author        : Sachin Dond
+        # Usage         : Method to return LWC component as 64encoded
+    */
+    getEncodedComponentDefUrl(caseRecordId) {
+        console.log('*caseRecordId*',caseRecordId);
+        let compDefinition = {
+            componentDef: "c:approvalRequestDetailComponent",
+            attributes: {
+                caseRecordId : caseRecordId
+            }
+        };
+        let encodedCompDef = btoa(JSON.stringify(compDefinition));
+        console.log('**encodedCompDef');
+        return "/one/one.app#" + encodedCompDef;
+    }
 }
