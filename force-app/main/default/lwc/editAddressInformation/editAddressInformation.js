@@ -1,13 +1,3 @@
-/*************************************************************************************
-    # Author        : Sachin Dond
-    # CreatedDate   : 7 July 2021
-    # Purpose       : JS file of editAddressInformation - child component called from tabComponentContainer
-    # Update History:
-    ****************************************************************************
-    Last Modified By     | Last Modified Date   | UserStory     | Changes
-    ****************************************************************************
-
-**************************************************************************************/
 
 import { LightningElement,track,api,wire } from 'lwc';
 export default class EditAddressInformation extends LightningElement{
@@ -20,11 +10,7 @@ export default class EditAddressInformation extends LightningElement{
     obj = {};                                   // temp object to hold the current form field changes
     
     
-    /*
-        # Author        : Sachin Dond
-        # Usage         : To get the all fields data on change 
-        # Update History: None
-    */
+
     handleOnInputFieldChange(event) {
         // copy the api property object into team before modifying as @api property object is read only and we cant modify it 
         this.obj =  Object.assign(this.obj, this.updatedFieldsValueObj);

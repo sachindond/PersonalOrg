@@ -12,8 +12,8 @@
 import { LightningElement,wire,api } from 'lwc';
 import getListOfPendingApprovalRecords from '@salesforce/apex/ItemForApprovalController.getListOfPendingApprovalRecords';
 import loggedInUserId from '@salesforce/user/Id';
-import { NavigationMixin } from 'lightning/navigation'; //import library for navigation
-
+import {publish, MessageContext} from 'lightning/messageService';
+import CONNECTOR_CHANNEL from '@salesforce/messageChannel/connector__c';
 export default class ItemForApproval extends LightningElement {
     @api tableData;
     showModelPopup = false;
@@ -22,20 +22,14 @@ export default class ItemForApproval extends LightningElement {
     //actions = [];
     //columnList = columns;
     connectedCallback() {
-        this.sfdcBaseURL = window.location.origin;
-        console.log('****sfdcBaseURL',this.sfdcBaseURL);
         const columns = [    
             { label: 'Related To', fieldName: 'RelatedTo', type: 'url' , typeAttributes:{label: { fieldName: 'CaseNumber' }}},
             { label: 'Type', fieldName: 'Type'},
-            { label: 'Assign To', fieldName: 'AssignTo'},
-            {
-                type: 'action',
-                typeAttributes: {rowActions: this.getRowActions}
-            }
+            { label: 'Assign To', fieldName: 'AssignTo'}
         ];
         this.columnList = columns;
        //this.tableData =  [{createdDate : "1479944705000" , duplicateWebsite : "www.google.com", websiteLabel:"google", personDetailMatch : true }];
-       this.getApprovalRecords();
+        this.getApprovalRecords();
     }
     getApprovalRecords() {
         getListOfPendingApprovalRecords()
@@ -53,7 +47,6 @@ export default class ItemForApproval extends LightningElement {
                         tempObj.isActive = false;
                    else 
                         tempObj.isActive = true;
-
                    tempArray.push(tempObj);
                 })
                 console.log('**tempArray',tempArray);
@@ -64,7 +57,7 @@ export default class ItemForApproval extends LightningElement {
            
         });
     }
-
+    /*
     handleRowAction(event) {
         const actionName = event.detail.action.name;
         const row = event.detail.row;
@@ -81,7 +74,8 @@ export default class ItemForApproval extends LightningElement {
                 this.handleRejectCloseAction();
                 
         }
-    }
+    } */
+    /*
     getRowActions(row, doneCallback) {
         console.log('*actions',row);
         console.log('loggedInUserId',loggedInUserId);
@@ -93,9 +87,10 @@ export default class ItemForApproval extends LightningElement {
             doneCallback(actions);
         }, 100);
     }
+    */
     /*
         # Author        : Sachin Dond
-        # Usage         : Method to return LWC component as 64encoded
+        # Usage         : Method to return LWC component as 64encoded url to navigate to another lwc wee avoid to create Aura component 
     */
     getEncodedComponentDefUrl(caseRecordId) {
         console.log('*caseRecordId*',caseRecordId);
@@ -105,8 +100,10 @@ export default class ItemForApproval extends LightningElement {
                 caseRecordId : caseRecordId
             }
         };
+        // btoa : convert to base 64 
         let encodedCompDef = btoa(JSON.stringify(compDefinition));
         console.log('**encodedCompDef');
+        // return url with encoded
         return "/one/one.app#" + encodedCompDef;
     }
 }
