@@ -1,16 +1,132 @@
 <!--
-    # Author        : Sachin Dond
-    # CreatedDate   : 19 July 2021
-    # Purpose       : 
-    # Type          : 
-    # Update History:
--->
+ * @ Author: Sachin Dond
+ * @ Create Time: 2021-07-19 10:45:31
+ * @ Modified by: Sachin Dond
+ * @ Modified time: 2021-07-21 17:11:17
+ * @ Description:
+ * @ User Story:
+ -->
 <template>
-    <c-approval-request-highlight-panel-component case-record-id={caseRecordId}></c-approval-request-highlight-panel-component>
-    <div>   
-        <lightning-card>
-            <!-- ## Lightning View Form ## -->
-            
-        </lightning-card>
+    <!--Added Highlight Panel Component -->
+    <!-- <c-approval-request-highlight-panel-component case-record-id={caseRecordId}> -->
+    <!-- </c-approval-request-highlight-panel-component> -->
+    <!--Added Case Details as record view form -->
+    <div class="c-container">
+        <lightning-layout multiple-rows="true">
+            <lightning-layout-item size="12">
+                <div class="page-section page-header">
+                    <c-approval-request-highlight-panel-component case-record-id={caseRecordId}>
+                    </c-approval-request-highlight-panel-component>
+                </div>
+            </lightning-layout-item>
+            <!--Section For Path Component -->
+            <lightning-layout-item class="slds-m-top_small" size="12">
+                <lightning-card>
+                    <c-approval-request-path-component></c-approval-request-path-component>
+                </lightning-card>
+            </lightning-layout-item>
+            <lightning-layout-item class="slds-m-top_small" size="12">
+                <lightning-layout multiple-rows="true">
+                    <lightning-layout-item size="8">
+                        <lightning-card>
+                            <lightning-record-edit-form id="recordEditForm" record-id={caseRecordId}
+                                object-api-name="Case">
+                                <lightning-layout>
+                                    <lightning-layout-item padding="around-small" size="6">
+                                        <lightning-output-field class='slds-form-element_readonly'
+                                        field-name="Status">
+                                    </lightning-output-field>
+                                        <lightning-output-field class='slds-form-element_readonly'
+                                            field-name="AccountId">
+                                        </lightning-output-field>
+                                        <lightning-output-field class='slds-form-element_readonly'
+                                            field-name="CaseNumber">
+                                        </lightning-output-field>
+                                        <lightning-output-field class='slds-form-element_readonly' field-name="OwnerId">
+                                        </lightning-output-field>
+                                        <lightning-output-field class='slds-form-element_readonly' field-name="Reason">
+                                        </lightning-output-field>
+                                        <lightning-output-field class='slds-form-element_readonly'
+                                            field-name="ContactEmail">
+                                        </lightning-output-field>
+                                        <lightning-output-field class='slds-form-element_readonly'
+                                            field-name="ContactFax">
+                                        </lightning-output-field>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item padding="around-small" size="6">
+                                        <lightning-output-field class='slds-form-element_readonly'
+                                            field-name="Approval_Status__c">
+                                        </lightning-output-field>
+                                        <lightning-output-field class='slds-form-element_readonly'
+                                            field-name="ContactMobile">
+                                        </lightning-output-field>
+                                        <lightning-output-field class='slds-form-element_readonly'
+                                            field-name="ContactId">
+                                        </lightning-output-field>
+                                        <lightning-output-field class='slds-form-element_readonly'
+                                            field-name="ContactPhone">
+                                        </lightning-output-field>
+                                        <lightning-output-field class='slds-form-element_readonly'
+                                            field-name="Priority">
+                                        </lightning-output-field>
+                                        <lightning-output-field class='slds-form-element_readonly' field-name="Status">
+                                        </lightning-output-field>
+                                        <lightning-output-field class='slds-form-element_readonly' field-name="Subject">
+                                        </lightning-output-field>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                            </lightning-record-edit-form>
+                            <div>
+                                <footer class="slds-modal__footer">
+                                    <lightning-button variant="neutral" class="slds-m-right_x-small" label="Approve"
+                                        title="Approve" disabled={isApproveButtonDisabled} onclick={handleApproveButtonClick}>
+                                    </lightning-button>
+                                    <lightning-button variant="neutral" class="slds-m-right_small"
+                                        label="Reject & Reassign" title="Reject & Reassign"
+                                        onclick={handleRejectReassignButtonClick}>
+                                    </lightning-button>
+                                    <lightning-button variant="neutral" class="slds-m-right_small"
+                                        label="Reject & Closed" title="Reject&Closed"
+                                        onclick={handleRejectCloseButtonClick}>
+                                    </lightning-button>
+                                </footer>
+                            </div>
+                        </lightning-card>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="4">
+                        
+                    </lightning-layout-item>
+                </lightning-layout>
+            </lightning-layout-item>
+        </lightning-layout>
     </div>
+    <template if:true={isOpenModalPopup}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close">
+                        <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                            <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                        </svg>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">{modalHeaderTitle}</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <lightning-textarea class="commentInputField" value="" name="commentInputField" label="Comments">
+                    </lightning-textarea>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Cancel" title="Cancel" onclick={handleCancelButtonClick}
+                        class="slds-m-left_x-small"></lightning-button>
+                    <lightning-button variant="brand" label={modalFooterApproveRejectButtonLabel}
+                        title={modalFooterApproveRejectButtonLabel} onclick={handleApproveRejectButtonClick}
+                        class="slds-m-left_x-small"></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
 </template>

@@ -1,0 +1,17 @@
+<!--
+ * @ Author: Sachin Dond
+ * @ Create Time: 2021-07-20 16:20:43
+ * @ Modified by: Sachin Dond
+ * @ Modified time: 2021-07-21 15:26:17
+ * @ Description: This is a path component to show the path based on picklist field
+ * @ User Story:
+ -->
+<template>
+    <template if:true={caseStatusPicklist.data}>
+        <lightning-progress-indicator current-step="In Progress" type="path" variant="base"> 
+            <template for:each={caseStatusPicklist.data.values} for:item="step">
+                <lightning-progress-step label={step.label} value={step.value} key={step.label}></lightning-progress-step>
+            </template>
+        </lightning-progress-indicator>
+    </template>
+</template>

@@ -10,10 +10,10 @@
                     |                   |              |    
 **************************************************************************************/
 import { LightningElement,wire,api } from 'lwc';
-import getListOfPendingApprovalRecords from '@salesforce/apex/ItemForApprovalController.getListOfPendingApprovalRecords';
-import loggedInUserId from '@salesforce/user/Id';
 import {publish, MessageContext} from 'lightning/messageService';
-import CONNECTOR_CHANNEL from '@salesforce/messageChannel/connector__c';
+import loggedInUserId from '@salesforce/user/Id';
+import getListOfPendingApprovalRecords from '@salesforce/apex/ItemForApprovalController.getListOfPendingApprovalRecords';
+
 export default class ItemForApproval extends LightningElement {
     @api tableData;
     showModelPopup = false;
@@ -36,10 +36,12 @@ export default class ItemForApproval extends LightningElement {
         .then(data => {
             console.log('data',JSON.stringify(data));
             if(data) {
+                // prepare array of object and assign it to table data 
                 let tempArray = [];
                 data.forEach(record=>{
                    let tempObj = {};
-                   tempObj.RelatedTo = this.getEncodedComponentDefUrl(record.ProcessInstance.TargetObjectId);
+                   // prepare the navigate url with the paramenter caseId,ProcessInstace,WorkItemId
+                   tempObj.RelatedTo = this.getEncodedComponentDefUrl(record.ProcessInstance.TargetObjectId,record.ProcessInstanceId,record.Id);
                    tempObj.CaseNumber = record.ProcessInstance.TargetObject.Name;
                    tempObj.Type =  record.ProcessInstance.TargetObject.Type;
                    tempObj.AssignTo = record.Actor.Name;
@@ -92,12 +94,14 @@ export default class ItemForApproval extends LightningElement {
         # Author        : Sachin Dond
         # Usage         : Method to return LWC component as 64encoded url to navigate to another lwc wee avoid to create Aura component 
     */
-    getEncodedComponentDefUrl(caseRecordId) {
+    getEncodedComponentDefUrl(caseRecordId,processInstanceId,processInstanceWorkItemId) {
         console.log('*caseRecordId*',caseRecordId);
         let compDefinition = {
             componentDef: "c:approvalRequestDetailComponent",
             attributes: {
-                caseRecordId : caseRecordId
+                caseRecordId : caseRecordId,
+                processInstanceId :  processInstanceId,
+                processInstanceWorkItemId : processInstanceWorkItemId
             }
         };
         // btoa : convert to base 64 

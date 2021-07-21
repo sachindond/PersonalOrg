@@ -10,12 +10,9 @@
     ****************************************************************************
     Sachin Dond          | 19 July              |               | Initial Version
 **************************************************************************************/
+
 import { LightningElement,api } from 'lwc';
 export default class ApprovalRequestHighlightPanelComponent extends LightningElement {
-
-    @api iconName;
-    @api recordId;
-    @api objectApiName;
-    @api fieldsToDisplay;
-    @api caseRecordId;
+    @api iconName;                          // Icon Name for the section
+    @api caseRecordId;                      // Case record id received from parent component
 }
