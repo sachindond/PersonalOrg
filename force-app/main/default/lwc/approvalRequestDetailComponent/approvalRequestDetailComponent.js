@@ -2,7 +2,7 @@
  * @ Author: Sachin Dond
  * @ Create Time: 2021-07-19 10:45:31
  * @ Modified by: Sachin Dond
- * @ Modified time: 2021-07-22 17:21:41
+ * @ Modified time: 2021-07-23 17:11:46
  * @ Description: This component used as container component for multiple child components
  *                it handle the approve reject action based on that update the approval process record in apex
  * @ User Story:
@@ -108,14 +108,12 @@ export default class ApprovalRequestDetailComponent extends LightningElement {
     })
       .then((result) => {
         if (result) {
-          getRecordNotifyChange([
-            {
-              recordId: this.caseRecordId
-            }
-          ]);
           this.isOpenModalPopup = false;
           let resultObject = JSON.parse(result);
+          console.log('*resultObject',resultObject);
           if (resultObject.instanceStatus === "Approved") {
+            getRecordNotifyChange([{recordId: this.caseRecordId}]);
+            this.template.querySelector('c-approval-history-component').refreshApprovalHistoryRecords();
             this.isApproveButtonDisabled = true;
             this.isRejectCloseButtonDisabled = true;
             this.isReassignButtonDisabled = true;
@@ -126,6 +124,8 @@ export default class ApprovalRequestDetailComponent extends LightningElement {
               "dismissable"
             );
           } else if (resultObject.instanceStatus === "Rejected") {
+            getRecordNotifyChange([{recordId: this.caseRecordId}]);
+            this.template.querySelector('c-approval-history-component').refreshApprovalHistoryRecords();
             this.isApproveButtonDisabled = true;
             this.isRejectCloseButtonDisabled = true;
             this.showToastMessage(

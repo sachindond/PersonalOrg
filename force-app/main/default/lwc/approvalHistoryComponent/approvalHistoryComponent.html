@@ -2,13 +2,12 @@
  * @ Author: Sachin Dond
  * @ Create Time: 2021-07-20 18:03:23
  * @ Modified by: Sachin Dond
- * @ Modified time: 2021-07-22 17:09:49
+ * @ Modified time: 2021-07-23 17:01:58
  * @ Description: Component to show the approval history records 
  * @ User Story:
  -->
 <template>
   <lightning-card style="padding:0;">
-    <!--Header Section-->
     <div class="slds-page-header">
       <div class="slds-page-header__row">
         <div class="slds-page-header__col-title">
@@ -35,18 +34,38 @@
     </div>
     <!--List of Approval History Records -->
     <div>
-      <ul>
-        <template if:true={approvalHistoryRecords.data}>
-          <template for:each={approvalHistoryRecords.data} for:item="record">
-            <li  key={record.recordId}>
-              <lightning-button variant="base" label={record.processNodeName} title={record.processNodeName} class="slds-m-left_x-small"></lightning-button></b></li>
-            <li key={record.recordId}>Status:   {record.status}</li>
-            <li key={record.recordId}>Assign To:  {record.assignToName}</li>
-            <li key={record.recordId}>Actual Approver:  {record.assignToName}</li>
-            <li key={record.recordId}>Comments: {record.comments}</li>
-          </template>
+      <template if:true={approvalHistoryRecords}>
+        <template for:each={approvalHistoryRecords} for:item="record">
+          <lightning-card key={record.recordId} variant="Narrow">
+            <lightning-button slot="title" variant="base" label={record.processNodeName} title={record.processNodeName} ></lightning-button>
+            <div class="slds-p-horizontal_small" style="margin:5px;">
+              <table>
+                <tr>
+                  <td style="width: 30%;">Date:</td>
+                  <td> <lightning-formatted-date-time value={record.approvalStepDate} year="numeric" month="numeric" day="numeric" hour="numeric"
+                   ></lightning-formatted-date-time></td>
+                </tr>
+                <tr>
+                  <td style="width: 30%;">Status:</td>
+                  <td>{record.status}</td>
+                </tr>
+                <tr>
+                  <td style="width: 30%;">Assign To:</td>
+                  <td>{record.assignToName}</td>
+                </tr>
+                <tr>
+                  <td style="width: 30%;">Actual Approver:</td>
+                  <td>{record.actualApprovarName}</td>
+                </tr>
+                <tr>
+                  <td style="width: 30%;">Comments:</td>
+                  <td>{record.comments}</td>
+                </tr>
+              </table>
+            </div>
+          </lightning-card>
         </template>
-      </ul>
+      </template>
     </div>
-    </lightning-card>
-    </template>
+  </lightning-card>
+</template>

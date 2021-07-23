@@ -65,7 +65,7 @@ public without sharing class ItemForApprovalController {
         List<ApprovalHistoryWrapper> listApprovalHistoryWrapper = new List<ApprovalHistoryWrapper>();
         try{
             List<ProcessInstance> listProcessInstanceRecords = [SELECT TargetObjectId,LastActorId,LastActor.Name,
-                                            (SELECT Id, ActorId,OriginalActor.Name,Comments,
+                                            (SELECT Id,CreatedDate,ActorId,OriginalActor.Name,Comments,
                                             ProcessNode.Name,StepStatus, ProcessInstanceId FROM StepsAndWorkitems  Order BY ID DESC)
                                             FROM ProcessInstance WHERE Id=:ProcessInstanceId ORDER BY CreatedDate DESC];
             
@@ -78,7 +78,13 @@ public without sharing class ItemForApprovalController {
                          //wrapperObj.actualApprovarName = 
                          wrapperObj.processNodeName = instanceHistoryObj.ProcessNode.Name;
                          wrapperObj.status = instanceHistoryObj.StepStatus;
+                         if(instanceHistoryObj.StepStatus == 'Started') {
+                            wrapperObj.status = 'Submitted';
+                            wrapperObj.processNodeName = 'Approval Request Submitted';
+                         }
                          wrapperObj.recordId = instanceHistoryObj.Id;
+                         wrapperObj.approvalStepDate = instanceHistoryObj.CreatedDate;
+                         wrapperObj.actualApprovarName = instanceHistoryObj.OriginalActor.Name;
                          listApprovalHistoryWrapper.add(wrapperObj);
                     }
                 }
@@ -106,5 +112,6 @@ public without sharing class ItemForApprovalController {
         public string status;
         @AuraEnabled 
         public string recordId;
+    
     }
 }
