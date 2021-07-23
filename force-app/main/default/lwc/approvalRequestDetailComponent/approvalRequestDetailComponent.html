@@ -2,15 +2,11 @@
  * @ Author: Sachin Dond
  * @ Create Time: 2021-07-19 10:45:31
  * @ Modified by: Sachin Dond
- * @ Modified time: 2021-07-21 17:11:17
+ * @ Modified time: 2021-07-22 17:15:54
  * @ Description:
  * @ User Story:
  -->
 <template>
-    <!--Added Highlight Panel Component -->
-    <!-- <c-approval-request-highlight-panel-component case-record-id={caseRecordId}> -->
-    <!-- </c-approval-request-highlight-panel-component> -->
-    <!--Added Case Details as record view form -->
     <div class="c-container">
         <lightning-layout multiple-rows="true">
             <lightning-layout-item size="12">
@@ -22,12 +18,13 @@
             <!--Section For Path Component -->
             <lightning-layout-item class="slds-m-top_small" size="12">
                 <lightning-card>
-                    <c-approval-request-path-component></c-approval-request-path-component>
+                    <c-approval-request-path-component current-status-picklist-value={currentStatusPicklistValue}></c-approval-request-path-component>
                 </lightning-card>
             </lightning-layout-item>
+            <!-- Section for Record View Form -->
             <lightning-layout-item class="slds-m-top_small" size="12">
                 <lightning-layout multiple-rows="true">
-                    <lightning-layout-item size="8">
+                    <lightning-layout-item size="8" padding="around-xx_small">
                         <lightning-card>
                             <lightning-record-edit-form id="recordEditForm" record-id={caseRecordId}
                                 object-api-name="Case">
@@ -82,36 +79,33 @@
                                         title="Approve" disabled={isApproveButtonDisabled} onclick={handleApproveButtonClick}>
                                     </lightning-button>
                                     <lightning-button variant="neutral" class="slds-m-right_small"
-                                        label="Reject & Reassign" title="Reject & Reassign"
+                                        label="Reassign" title="Reject & Reassign"
+                                        disabled={isReassignButtonDisabled}
                                         onclick={handleRejectReassignButtonClick}>
                                     </lightning-button>
                                     <lightning-button variant="neutral" class="slds-m-right_small"
                                         label="Reject & Closed" title="Reject&Closed"
+                                        disabled={isRejectCloseButtonDisabled}
                                         onclick={handleRejectCloseButtonClick}>
                                     </lightning-button>
                                 </footer>
                             </div>
                         </lightning-card>
                     </lightning-layout-item>
-                    <lightning-layout-item size="4">
-                        
+                    <!-- Section for Approval History -->
+                    <lightning-layout-item size="4" padding="around-xx_small">
+                        <c-approval-history-component process-instance-id={processInstanceId}></c-approval-history-component>
                     </lightning-layout-item>
                 </lightning-layout>
             </lightning-layout-item>
         </lightning-layout>
     </div>
+    <!--Section for Modal Popup -->
     <template if:true={isOpenModalPopup}>
         <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
             aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
             <div class="slds-modal__container">
                 <header class="slds-modal__header">
-                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
-                        title="Close">
-                        <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
-                            <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-                        </svg>
-                        <span class="slds-assistive-text">Close</span>
-                    </button>
                     <h2 id="modal-heading-01" class="slds-modal__title slds-hyphenate">{modalHeaderTitle}</h2>
                 </header>
                 <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">

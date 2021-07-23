@@ -22,6 +22,7 @@ export default class ItemForApproval extends LightningElement {
     //actions = [];
     //columnList = columns;
     connectedCallback() {
+        console.log('**Connected Callback');
         const columns = [    
             { label: 'Related To', fieldName: 'RelatedTo', type: 'url' , typeAttributes:{label: { fieldName: 'CaseNumber' }}},
             { label: 'Type', fieldName: 'Type'},
@@ -32,6 +33,7 @@ export default class ItemForApproval extends LightningElement {
         this.getApprovalRecords();
     }
     getApprovalRecords() {
+        console.log('**Imperative Call');
         getListOfPendingApprovalRecords()
         .then(data => {
             console.log('data',JSON.stringify(data));
@@ -56,7 +58,7 @@ export default class ItemForApproval extends LightningElement {
             }
         })
         .catch(error => {
-           
+           console.log('***Error ',error);
         });
     }
     /*

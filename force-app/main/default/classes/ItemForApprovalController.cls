@@ -9,20 +9,21 @@
     ****************************************************************************
                     |                   |              |    
 **************************************************************************************/
-public with sharing class ItemForApprovalController {
+public without sharing class ItemForApprovalController {
     // Method returns the list of queue ids where logged in user part of that queue
     public static Set<Id> getQueueIds () {
         Set<Id> setOfQueueIds = new Set<Id>();
-        List<GroupMember> listOfGroupMember =  [Select  Group.Id From GroupMember Where UserOrGroupId =:UserInfo.getUserId() and Group.Type = 'Queue'];
-        for(GroupMember memberRecord : listOfGroupMember) {
-            setOfQueueIds.add(memberRecord.Group.Id);
+        List<GroupMember> listOfGroupMember =  [Select Group.Id From GroupMember Where UserOrGroupId =:UserInfo.getUserId() and Group.Type = 'Queue'];
+        if(listOfGroupMember.size() > 0) {
+            for(GroupMember memberRecord : listOfGroupMember) {
+                setOfQueueIds.add(memberRecord.Group.Id);
+            }
         }
         return setOfQueueIds;
     }
     // Method returns list of work item which is pending for approval with user or its queue
     @AuraEnabled
     public static List<ProcessInstanceWorkItem> getListOfPendingApprovalRecords(){
-        system.debug('**lstOfProcessInstanceWorkItem'); 
         try {
             Set<Id> setOfQueueIds = getQueueIds();
             List<ProcessInstanceWorkItem> lstOfProcessInstanceWorkItem = [Select Id,Actor.Name,Actor.Id,ProcessInstanceId,ProcessInstance.TargetObject.Name,
@@ -57,5 +58,53 @@ public with sharing class ItemForApprovalController {
             return null;
         }
     }
-
+    // Method to return list of Approval History Records
+    @AuraEnabled(cacheable=true)
+    public static List<ApprovalHistoryWrapper> getApprovalHistoryRecords(String processInstanceId) {
+        system.debug('**process instance ID'+processInstanceId);
+        List<ApprovalHistoryWrapper> listApprovalHistoryWrapper = new List<ApprovalHistoryWrapper>();
+        try{
+            List<ProcessInstance> listProcessInstanceRecords = [SELECT TargetObjectId,LastActorId,LastActor.Name,
+                                            (SELECT Id, ActorId,OriginalActor.Name,Comments,
+                                            ProcessNode.Name,StepStatus, ProcessInstanceId FROM StepsAndWorkitems  Order BY ID DESC)
+                                            FROM ProcessInstance WHERE Id=:ProcessInstanceId ORDER BY CreatedDate DESC];
+            
+            if(listProcessInstanceRecords.size() > 0) {
+                for(ProcessInstance instanceObj :listProcessInstanceRecords){
+                    for(ProcessInstanceHistory instanceHistoryObj :instanceObj.StepsAndWorkitems) {
+                         ApprovalHistoryWrapper wrapperObj = new ApprovalHistoryWrapper();
+                         wrapperObj.comments = instanceHistoryObj.Comments;
+                         wrapperObj.assignToName = instanceHistoryObj.OriginalActor.Name;
+                         //wrapperObj.actualApprovarName = 
+                         wrapperObj.processNodeName = instanceHistoryObj.ProcessNode.Name;
+                         wrapperObj.status = instanceHistoryObj.StepStatus;
+                         wrapperObj.recordId = instanceHistoryObj.Id;
+                         listApprovalHistoryWrapper.add(wrapperObj);
+                    }
+                }
+            }
+            system.debug('**listApprovalHistoryWrapper'+listApprovalHistoryWrapper);
+            return listApprovalHistoryWrapper;
+        } catch(exception ex) {
+            system.debug('**Exception Occur'+ex.getMessage());
+            return null;
+        }
+    }
+    // Wrapper class to hold values for approval history records
+    public class ApprovalHistoryWrapper {
+        @AuraEnabled 
+        public string comments;
+        @AuraEnabled 
+        public datetime approvalStepDate;
+        @AuraEnabled 
+        public string assignToName;
+        @AuraEnabled 
+        public string actualApprovarName;
+        @AuraEnabled 
+        public string processNodeName;
+        @AuraEnabled 
+        public string status;
+        @AuraEnabled 
+        public string recordId;
+    }
 }
