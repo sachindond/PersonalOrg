@@ -1,0 +1,18 @@
+<!--
+/**
+ * @ Author: Sachin Dond
+ * @ Create Time: 2021-07-27 13:56:16
+ * @ Modified by: Sachin Dond
+ * @ Modified time: 2021-07-27 14:59:24
+ * @ Description:
+ * @ User Story:
+ */
+
+-->
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId,lightning:isUrlAddressable,force:appHostable" access="global" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute type="id" name="recordId" /> 
+    <lightning:workspaceAPI aura:id="workspace" />
+    <!--Call LWC component with case id as parameter-->
+    <c:approvalRequestDetailComponent  caseRecordId="{!v.recordId}"/> 
+</aura:component>

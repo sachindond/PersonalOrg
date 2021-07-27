@@ -2,12 +2,12 @@
  * @ Author: Sachin Dond
  * @ Create Time: 2021-07-20 18:03:23
  * @ Modified by: Sachin Dond
- * @ Modified time: 2021-07-23 17:01:58
+ * @ Modified time: 2021-07-27 20:08:27
  * @ Description: Component to show the approval history records 
  * @ User Story:
  -->
 <template>
-  <lightning-card style="padding:0;">
+  <article class="slds-card">
     <div class="slds-page-header">
       <div class="slds-page-header__row">
         <div class="slds-page-header__col-title">
@@ -36,7 +36,9 @@
     <div>
       <template if:true={approvalHistoryRecords}>
         <template for:each={approvalHistoryRecords} for:item="record">
-          <lightning-card key={record.recordId} variant="Narrow">
+          <article key={record.recordId} class="slds-card">
+            <lightning-formatted-url label={record.processNodeName} value={record.processNodeName} tooltip={record.processNodeName} target="_blank">
+            </lightning-formatted-url>           
             <lightning-button slot="title" variant="base" label={record.processNodeName} title={record.processNodeName} ></lightning-button>
             <div class="slds-p-horizontal_small" style="margin:5px;">
               <table>
@@ -63,9 +65,9 @@
                 </tr>
               </table>
             </div>
-          </lightning-card>
+          </article>
         </template>
       </template>
     </div>
-  </lightning-card>
+</article>
 </template>

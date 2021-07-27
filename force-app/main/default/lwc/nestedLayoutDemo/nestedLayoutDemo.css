@@ -1,0 +1,19 @@
+.c-container {
+    border: 2px solid green;
+    
+}
+.page-section {
+    border: solid 1px #ccc;
+    background-color:yellow;
+}
+.page-header,
+.page-footer {
+    height: 50px;
+}
+.page-main {
+    background: red;
+}
+.page-left,
+.page-right {
+    background: #f0efef;
+}

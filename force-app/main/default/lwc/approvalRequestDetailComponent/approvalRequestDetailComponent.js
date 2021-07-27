@@ -2,7 +2,7 @@
  * @ Author: Sachin Dond
  * @ Create Time: 2021-07-19 10:45:31
  * @ Modified by: Sachin Dond
- * @ Modified time: 2021-07-23 17:11:46
+ * @ Modified time: 2021-07-23 21:42:16
  * @ Description: This component used as container component for multiple child components
  *                it handle the approve reject action based on that update the approval process record in apex
  * @ User Story:
@@ -61,7 +61,7 @@ export default class ApprovalRequestDetailComponent extends LightningElement {
   // Method to open the Reject Reassign Popup
   handleRejectReassignButtonClick() {}
 
-  // Method to open Approval Popup
+  // Method to open Approval Popup with dynamic Header, Button Label
   handleRejectCloseButtonClick() {
     this.modalHeaderTitle = "Reject & Close Case";
     this.isOpenModalPopup = true;
@@ -93,7 +93,7 @@ export default class ApprovalRequestDetailComponent extends LightningElement {
         this.caseRecordId
       );
   }
-  // Method to set Approval Process with Status Approve/Reject
+  // Apex Imperatively Method to set Approval Process with Status Approve/Reject
   updateApprovalProcessRecord(
     processInstanceWorkItemId,
     approvalStatus,
@@ -111,6 +111,7 @@ export default class ApprovalRequestDetailComponent extends LightningElement {
           this.isOpenModalPopup = false;
           let resultObject = JSON.parse(result);
           console.log('*resultObject',resultObject);
+          // Checking the instance result if the status is Approved or Reject
           if (resultObject.instanceStatus === "Approved") {
             getRecordNotifyChange([{recordId: this.caseRecordId}]);
             this.template.querySelector('c-approval-history-component').refreshApprovalHistoryRecords();
@@ -138,6 +139,7 @@ export default class ApprovalRequestDetailComponent extends LightningElement {
         }
       })
       .catch((error) => {
+        // catching the errors and display in toast message
         this.showToastMessage(
           "Error",
           "Case Record Failed To Approve",
@@ -146,7 +148,7 @@ export default class ApprovalRequestDetailComponent extends LightningElement {
         );
       });
   }
-  // Method to show the toast message
+  // Method to show the toast message - generic method 
   showToastMessage(title, message, variant, mode) {
     const event = new ShowToastEvent({
       title: title,
