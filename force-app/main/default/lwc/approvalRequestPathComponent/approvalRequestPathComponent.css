@@ -1,3 +1,10 @@
-.slds-is-current {
-    
+.slds-path__item:first-child, .slds-is-complete:before,.slds-is-complete:after  {
+    background-color:#2f8fdb;
+}
+.slds-is-current:before,.slds-is-current:after {
+    background-color:#014486;
+    color:white;
+}
+.slds-is-current:hover{
+    background-color:red;
 }

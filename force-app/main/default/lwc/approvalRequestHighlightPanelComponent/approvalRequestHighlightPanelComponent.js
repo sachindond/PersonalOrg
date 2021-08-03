@@ -3,7 +3,7 @@
     # CreatedDate       : 19 July 2021
     # Purpose           : JS file to show approval detail component
     # Type              : Child Component 
-    # Parent Component: approvalRequestDetailComponent
+    # Parent Component: : approvalRequestDetailComponent
     # Update History    : 
     ****************************************************************************
     Last Modified By     | Last Modified Date   | UserStory     | Changes

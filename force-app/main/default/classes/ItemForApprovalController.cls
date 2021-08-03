@@ -96,6 +96,15 @@ public without sharing class ItemForApprovalController {
             return null;
         }
     }
+    // Method to get the custom metadata records which have guided steps
+    @AuraEnabled(cacheable=true)    
+    public static List<Case_Status_Path_Guidance__mdt> getPathGuidanceCustomMetadataRecords(){
+        try {
+            return [Select Id,MasterLabel,Fields_To_Update__c,Guidance_Text__c,Picklist_Value__c from Case_Status_Path_Guidance__mdt];
+        } catch (Exception ex) {
+            throw new AuraHandledException(ex.getMessage());
+        }
+    }
     // Wrapper class to hold values for approval history records
     public class ApprovalHistoryWrapper {
         @AuraEnabled 

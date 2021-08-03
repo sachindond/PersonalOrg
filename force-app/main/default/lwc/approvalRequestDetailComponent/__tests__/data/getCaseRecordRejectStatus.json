@@ -1,0 +1,15 @@
+{
+    "apiName": "Case",
+    "childRelationships": {},
+    "fields": {
+      "Approval_Status__c": { "displayValue": "Approve", "value": "Approve" },
+      "OwnerId": { "displayValue": null, "value": "0056F00000EHMDFQA5" },
+      "Status": { "displayValue": "Reject", "value": "Reject" }
+    },
+    "id": "5006F000031wYUlQAM",
+    "lastModifiedById": "0056F00000EHMDFQA5",
+    "lastModifiedDate": "2021-07-23T11:40:29.000Z",
+    "recordTypeId": "012000000000000AAA",
+    "recordTypeInfo": null,
+    "systemModstamp": "2021-07-23T11:40:29.000Z"
+  }

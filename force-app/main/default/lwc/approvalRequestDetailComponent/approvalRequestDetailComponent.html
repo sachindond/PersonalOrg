@@ -2,13 +2,14 @@
  * @ Author: Sachin Dond
  * @ Create Time: 2021-07-19 10:45:31
  * @ Modified by: Sachin Dond
- * @ Modified time: 2021-07-27 20:01:07
+ * @ Modified time: 2021-08-02 21:10:22
  * @ Description:
  * @ User Story:
  -->
 <template>
     <div class="c-container">
         <lightning-layout multiple-rows="true">
+            <!--Section for Highlight Panel-->
             <lightning-layout-item size="12" padding="around-x_small">
                 <div class="page-section page-header">
                     <c-approval-request-highlight-panel-component case-record-id={caseRecordId}>
@@ -17,22 +18,40 @@
             </lightning-layout-item>
             <!--Section For Path Component -->
             <lightning-layout-item class="slds-var-p-top_small slds-var-p-bottom_small" size="12">
-                <lightning-card>
-                    <c-approval-request-path-component current-status-picklist-value={currentStatusPicklistValue}></c-approval-request-path-component>
-                </lightning-card>
+                <article class="slds-card slds-var-p-around_small">
+                    <template if:true={currentStatusPicklistValue}>
+                        <c-approval-request-path-component current-status-picklist-value={currentStatusPicklistValue}>
+                        </c-approval-request-path-component>
+                    </template>
+                </article>
             </lightning-layout-item>
             <!-- Section for Record View Form -->
-            <lightning-layout-item  size="12">
+            <lightning-layout-item size="12">
                 <lightning-layout multiple-rows="true">
-                    <lightning-layout-item size="8" >
-                        <lightning-card>
+                    <lightning-layout-item size="8">
+                        <div class="slds-notify slds-notify_alert slds-alert_warning" role="alert">
+                            <span class="slds-assistive-text">warning</span>
+                            
+                                
+                                    <lightning-icon class="redOnYellow" icon-name="utility:warning" alternative-text="XML file" title="XML"></lightning-icon>
+                                
+                           
+                            <h2>Your browser is outdated. Your Salesforce experience may be degraded.
+                                <a href="#">More Information</a>
+                            </h2>
+                            <div class="slds-notify__close">
+                                <button class="slds-button slds-button_icon slds-button_icon-small" title="Close">
+                                    <lightning-icon icon-name="utility:warning" alternative-text="XML file" title="XML"></lightning-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <article class="slds-card">
                             <lightning-record-edit-form id="recordEditForm" record-id={caseRecordId}
                                 object-api-name="Case">
                                 <lightning-layout>
-                                    <lightning-layout-item class="slds-var-p-left_small" size="6">
-                                        <lightning-output-field class='slds-form-element_readonly'
-                                        field-name="Status">
-                                    </lightning-output-field>
+                                    <lightning-layout-item padding="around_small" size="6">
+                                        <lightning-output-field class='slds-form-element_readonly' field-name="Status">
+                                        </lightning-output-field>
                                         <lightning-output-field class='slds-form-element_readonly'
                                             field-name="AccountId">
                                         </lightning-output-field>
@@ -50,7 +69,7 @@
                                             field-name="ContactFax">
                                         </lightning-output-field>
                                     </lightning-layout-item>
-                                    <lightning-layout-item size="6" class="slds-var-p-right_small slds-var-p-left_small">
+                                    <lightning-layout-item size="6" padding="around_small">
                                         <lightning-output-field class='slds-form-element_readonly'
                                             field-name="Approval_Status__c">
                                         </lightning-output-field>
@@ -76,26 +95,27 @@
                             <!--Footer Section-->
                             <div slot="footer">
                                 <footer class="slds-modal__footer">
-                                    <lightning-button variant="neutral" class="slds-m-right_x-small" label="Approve"
-                                        title="Approve" disabled={isApproveButtonDisabled} onclick={handleApproveButtonClick}>
+                                    <lightning-button variant="neutral" class="slds-m-right_x-small approveButtonCls"
+                                        label="Approve" title="Approve" disabled={isApproveButtonDisabled}
+                                        onclick={handleApproveButtonClick}>
                                     </lightning-button>
-                                    <lightning-button variant="neutral" class="slds-m-right_small"
-                                        label="Reassign" title="Reject & Reassign"
-                                        disabled={isReassignButtonDisabled}
+                                    <lightning-button variant="neutral" class="slds-m-right_small reassignButtonCls"
+                                        label="Reassign" title="Reject & Reassign" disabled={isReassignButtonDisabled}
                                         onclick={handleRejectReassignButtonClick}>
                                     </lightning-button>
-                                    <lightning-button variant="neutral" class="slds-m-right_small"
+                                    <lightning-button variant="neutral" class="slds-m-right_small rejectButtonCls"
                                         label="Reject & Closed" title="Reject&Closed"
-                                        disabled={isRejectCloseButtonDisabled}
-                                        onclick={handleRejectCloseButtonClick}>
+                                        disabled={isRejectCloseButtonDisabled} onclick={handleRejectCloseButtonClick}>
                                     </lightning-button>
                                 </footer>
                             </div>
-                        </lightning-card>
+                        </article>
                     </lightning-layout-item>
-                    <!-- Section for Approval History -->
-                    <lightning-layout-item size="4" class="slds-var-p-left_small slds-var-p-right_x_small slds-var-p-top_x_small">
-                        <c-approval-history-component process-instance-id={processInstanceId}></c-approval-history-component>
+                    <!-- Section for Approval History Sidebar-->
+                    <lightning-layout-item size="4"
+                        class="slds-var-p-left_small slds-var-p-right_x_small slds-var-p-top_x_small">
+                        <c-approval-history-component process-instance-id={processInstanceId}>
+                        </c-approval-history-component>
                     </lightning-layout-item>
                 </lightning-layout>
             </lightning-layout-item>
@@ -114,11 +134,11 @@
                     </lightning-textarea>
                 </div>
                 <footer class="slds-modal__footer">
-                    <lightning-button label="Cancel" title="Cancel" onclick={handleCancelButtonClick}
-                        class="slds-m-left_x-small"></lightning-button>
+                    <lightning-button label="Cancel" title="Cancel" onclick={handleModalCancelButtonClick}
+                        class="slds-m-left_x-small cancelButtonCls"></lightning-button>
                     <lightning-button variant="brand" label={modalFooterApproveRejectButtonLabel}
-                        title={modalFooterApproveRejectButtonLabel} onclick={handleApproveRejectButtonClick}
-                        class="slds-m-left_x-small"></lightning-button>
+                        title={modalFooterApproveRejectButtonLabel} onclick={handleModalApproveRejectButtonClick}
+                        class="slds-m-left_x-small approveRejectButtonCls"></lightning-button>
                 </footer>
             </div>
         </section>

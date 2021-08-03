@@ -2,9 +2,8 @@
  * @ Author: Sachin Dond
  * @ Create Time: 2021-07-19 10:45:31
  * @ Modified by: Sachin Dond
- * @ Modified time: 2021-07-23 21:42:16
- * @ Description: This component used as container component for multiple child components
- *                it handle the approve reject action based on that update the approval process record in apex
+ * @ Modified time: 2021-08-02 14:48:07
+ * @ Description:
  * @ User Story:
  */
 import { LightningElement, api, wire } from "lwc";
@@ -34,14 +33,16 @@ export default class ApprovalRequestDetailComponent extends LightningElement {
     recordId: "$caseRecordId",
     fields: [OWNERID_FIELD, STATUS_FIELD, APPROVAL_STATUS_FIELD]
   })
-  wiredCaseRecord({ error, data }) {
+  wiredCaseRecord({error,data}) {
     if (data) {
+      console.log('***data',JSON.stringify(data));
+      console.log('***JSON FIELDS',JSON.stringify(data.fields));
       console.log('***processInstanceId',this.processInstanceId);
       this.currentStatusPicklistValue = data.fields.Status.value;
       console.log('**Current Picklist Values',this.currentStatusPicklistValue);
-      if(data.fields.Status.value === 'Approve') {
-        this.isApproveButtonDisabled = true;                     
-        this.isRejectCloseButtonDisabled = true;                      
+      if (data.fields.Status.value === "Approve") {
+        this.isApproveButtonDisabled = true;
+        this.isRejectCloseButtonDisabled = true;
         this.isReassignButtonDisabled = true;
       }
       // Disable Approve button when logged in user is not owner of case
@@ -69,12 +70,12 @@ export default class ApprovalRequestDetailComponent extends LightningElement {
   }
   /* Modal Popup Methods */
   // Method To Close the Modal Popup
-  handleCancelButtonClick() {
+  handleModalCancelButtonClick() {
     this.isOpenModalPopup = false;
   }
   // Method to Handle Approve/Reject Button Click
   // We send workitem id and based on Button We mark case as Approve or Reject
-  handleApproveRejectButtonClick(event) {
+  handleModalApproveRejectButtonClick(event) {
     // Get the value of comment
     let comment = this.template.querySelector(".commentInputField").value;
     // if user click on Approve Button

@@ -2,17 +2,41 @@
  * @ Author: Sachin Dond
  * @ Create Time: 2021-07-20 16:20:43
  * @ Modified by: Sachin Dond
- * @ Modified time: 2021-07-23 11:33:17
+ * @ Modified time: 2021-07-29 17:37:54
  * @ Description: This is a path component to show the path based on picklist field
  * @ User Story:
  -->
 <template>
     <template if:true={caseStatusPicklist.data}>
-        <lightning-progress-indicator current-step={currentStatusPicklistValue} type="path" variant="base"> 
-            <template for:each={caseStatusPicklist.data.values} for:item="step">
-                <lightning-progress-step label={step.label} value={step.value} key={step.label} 
-                onstepmouseenter={handlePathStepMouseEnter}></lightning-progress-step>
-            </template>
-        </lightning-progress-indicator>
+        <div class="slds-path slds-path_has-coaching">
+            <div class="slds-grid slds-path__track">
+                <div class="slds-grid slds-path__scroller-container">
+                    <lightning-button-icon class="chevronButtonClass slds-path__trigger"
+                        icon-name="utility:chevronright" size="medium" onclick={handleChevronButtonClick}>
+                    </lightning-button-icon>
+                    <div class="slds-path__scroller">
+                        <div class="slds-path__scroller_inner">
+                            <lightning-progress-indicator current-step={currentStatusPicklistValue} type="path"
+                                variant="base">
+                                <template for:each={caseStatusPicklist.data.values} for:item="step">
+                                    <lightning-progress-step label={step.label} value={step.value} key={step.label}
+                                        onstepmouseenter={handlePathStepMouseEnter} onclick={handleStepClick}></lightning-progress-step>
+                                </template>
+                            </lightning-progress-indicator>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-path__content slds-is-collapsed" id="path-coaching-2">
+                <div class="slds-path__coach slds-grid">
+                    <div class="slds-path__guidance">
+                        <h2 class="slds-path__coach-title">Guidance for Success</h2>
+                        <div class="slds-text-longform slds-path__guidance-content">
+                            <p>{guidanceText}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </template>
 </template>
